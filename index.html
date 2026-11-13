@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One Reply</title>
+<meta name="description" content="One Reply — сайты, чат-боты с записью, Telegram-боты и ИИ-аналитик для салонов и студий. Запуск за 1–2 дня, демо до оплаты.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Ночная смена: кобальтовое небо в 23:47 и натриевый фонарь. Сайт — переписка, которую никто не пропустил. */
+:root{
+  --sky:#1C2BFF;      /* кобальт — фон всего сайта */
+  --sky-deep:#0F17A8; /* тень, полосы */
+  --paper:#F4F1E8;    /* бумага чека, текст */
+  --lamp:#FF7A1A;     /* натриевый фонарь — единственный акцент */
+  --ink:#0B0D2E;      /* текст на бумаге */
+  --line:rgba(244,241,232,.28);
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Golos Text","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--sky);color:var(--paper);font-family:var(--body);font-size:17px;line-height:1.5;overflow-x:hidden}
+a{color:inherit}
+img{max-width:100%}
+:focus-visible{outline:3px solid var(--lamp);outline-offset:3px}
+.wrap{max-width:1320px;margin:0 auto;padding:0 clamp(16px,4vw,48px)}
+h1,h2,h3{font-family:var(--display);font-weight:900;line-height:.92;letter-spacing:-.02em;text-wrap:balance}
+.mono{font-family:var(--mono)}
+
+/* ---------- шапка ---------- */
+.top{position:sticky;top:0;z-index:20;background:var(--sky);border-bottom:2px solid var(--paper)}
+.top-in{display:flex;align-items:center;gap:20px;min-height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:900;font-size:20px;letter-spacing:-.03em}
+.logo i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--lamp);color:var(--ink);font-style:normal;font-size:13px}
+.nav{display:flex;gap:22px;margin-left:auto;font-weight:600;font-size:15px}
+.nav a{text-decoration:none;opacity:.85}
+.nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.clock{font-family:var(--mono);font-size:13px;padding:6px 10px;border:1.5px solid var(--paper);border-radius:99px;white-space:nowrap}
+.clock b{color:var(--lamp)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:99px;font-family:var(--body);font-weight:700;font-size:16px;text-decoration:none;border:2px solid var(--paper);cursor:pointer;transition:transform .15s,background .15s,color .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-lamp{background:var(--lamp);border-color:var(--lamp);color:var(--ink)}
+.btn-ghost{background:transparent;color:var(--paper)}
+.btn-ghost:hover{background:var(--paper);color:var(--sky)}
+.btn-sm{min-height:42px;padding:0 18px;font-size:14px}
+
+/* ---------- герой ---------- */
+.hero{position:relative;padding:56px 0 0;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.25fr .9fr;gap:40px;align-items:start}
+.kicker{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px;display:flex;gap:10px;flex-wrap:wrap}
+.kicker span{padding:4px 10px;border:1.5px solid var(--paper);border-radius:99px}
+.hero h1{font-size:clamp(52px,9.4vw,148px)}
+.hero h1 .l2{display:block;color:var(--lamp)}
+.hero h1 .l3{display:block;-webkit-text-stroke:2px var(--paper);color:transparent}
+.lead{max-width:52ch;font-size:19px;margin:28px 0 30px;opacity:.92}
+.hero-btns{display:flex;flex-wrap:wrap;gap:12px}
+
+/* телефон с перепиской */
+.phone{position:relative;justify-self:end;width:100%;max-width:400px;background:var(--paper);color:var(--ink);border-radius:34px;padding:14px;box-shadow:18px 18px 0 var(--sky-deep);transform:rotate(2.2deg)}
+.phone-top{display:flex;align-items:center;gap:10px;padding:8px 8px 14px;border-bottom:1.5px dashed rgba(11,13,46,.25)}
+.ava{width:38px;height:38px;border-radius:50%;background:var(--sky);color:var(--paper);display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:13px}
+.phone-top b{display:block;font-size:15px}
+.phone-top small{font-family:var(--mono);font-size:11px;color:#1d8a3a}
+.chat{display:flex;flex-direction:column;gap:10px;padding:16px 4px 6px;font-size:15px;min-height:360px}
+.msg{max-width:85%;padding:10px 13px;border-radius:18px;line-height:1.35}
+.msg time{display:block;font-family:var(--mono);font-size:10.5px;opacity:.55;margin-top:4px}
+.msg.in{align-self:flex-end;background:var(--sky);color:var(--paper);border-bottom-right-radius:5px}
+.msg.out{align-self:flex-start;background:#E4DFD0;border-bottom-left-radius:5px}
+.slots{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.slots span{font-family:var(--mono);font-size:12px;padding:5px 9px;border-radius:99px;border:1.5px solid var(--ink)}
+.slots span.on{background:var(--lamp);border-color:var(--lamp)}
+.msg.done{background:var(--ink);color:var(--paper)}
+.typing{align-self:flex-start;display:flex;gap:4px;padding:12px 14px;background:#E4DFD0;border-radius:18px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--ink);opacity:.4;animation:dot 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes dot{50%{opacity:1;transform:translateY(-3px)}}
+.stamp{position:absolute;right:-22px;top:-26px;width:118px;height:118px;border-radius:50%;background:var(--lamp);color:var(--ink);display:grid;place-items:center;text-align:center;font-family:var(--display);font-weight:900;font-size:13px;line-height:1.05;transform:rotate(-12deg);box-shadow:0 0 0 4px var(--sky)}
+.stamp svg{position:absolute;inset:0;animation:spin 16s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* бегущая строка */
+.ticker{margin-top:64px;border-block:2px solid var(--paper);background:var(--lamp);color:var(--ink);overflow:hidden;white-space:nowrap}
+.ticker-in{display:inline-flex;gap:0;animation:run 32s linear infinite;font-family:var(--display);font-weight:900;font-size:clamp(20px,2.6vw,34px);padding:14px 0}
+.ticker-in span{padding:0 28px}
+.ticker-in span::after{content:"✳";padding-left:56px}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* ---------- секции ---------- */
+.sec{padding:110px 0}
+.sec-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:56px}
+.sec h2{font-size:clamp(40px,6.4vw,92px)}
+.sec-head p{max-width:46ch;font-size:18px;opacity:.9}
+.tag{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--lamp);margin-bottom:16px;display:block}
+
+/* три дыры */
+.holes{display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--paper)}
+.hole{padding:30px 28px 36px;border-right:2px solid var(--paper);min-width:0}
+.hole:last-child{border-right:0}
+.hole .big{font-family:var(--display);font-weight:900;font-size:clamp(54px,6vw,88px);line-height:1;color:var(--lamp);letter-spacing:-.04em}
+.hole h3{font-size:26px;margin:18px 0 12px;line-height:1.05}
+.hole p{opacity:.88;max-width:34ch}
+
+/* услуги — полосы */
+.svc{border-top:2px solid var(--paper)}
+.svc-row{display:grid;grid-template-columns:80px 1.1fr 1.4fr auto;gap:28px;align-items:center;padding:26px 0;border-bottom:2px solid var(--paper);transition:background .2s,color .2s,padding .2s}
+.svc-row:hover{background:var(--paper);color:var(--ink);padding-inline:20px}
+.svc-row .n{font-family:var(--mono);font-size:14px}
+.svc-row h3{font-size:clamp(24px,2.6vw,38px);line-height:1}
+.svc-row p{opacity:.88;max-width:52ch}
+.svc-row .p{font-family:var(--display);font-weight:700;font-size:20px;white-space:nowrap}
+.svc-row:hover .p{color:var(--sky)}
+
+/* как бот записывает */
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:0;counter-reset:s}
+.flow li{list-style:none;padding:22px 18px 26px;border:2px solid var(--paper);margin-left:-2px;min-width:0;position:relative;background:var(--sky)}
+.flow li:first-child{margin-left:0}
+.flow li::before{counter-increment:s;content:"0" counter(s);font-family:var(--mono);font-size:13px;color:var(--lamp)}
+.flow li b{display:block;font-family:var(--display);font-size:19px;margin:12px 0 8px;line-height:1.05}
+.flow li span{font-size:14.5px;opacity:.88}
+.flow li:last-child{background:var(--lamp);color:var(--ink);border-color:var(--lamp)}
+.flow li:last-child::before{color:var(--ink)}
+
+/* ИИ-аналитик */
+.ai{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.ai ul{list-style:none;display:grid;gap:12px;margin-top:26px}
+.ai li{padding-left:28px;position:relative}
+.ai li::before{content:"→";position:absolute;left:0;color:var(--lamp);font-weight:700}
+.tg{background:var(--paper);color:var(--ink);border-radius:22px;padding:22px;font-family:var(--mono);font-size:14.5px;line-height:1.6;box-shadow:-14px 14px 0 var(--lamp);transform:rotate(-1.5deg)}
+.tg-h{display:flex;justify-content:space-between;font-size:12px;opacity:.6;margin-bottom:12px;border-bottom:1.5px dashed rgba(11,13,46,.25);padding-bottom:10px}
+.tg b{font-weight:700}
+.tg .hl{background:var(--lamp);padding:0 4px}
+.note{font-family:var(--mono);font-size:12px;opacity:.7;margin-top:18px}
+
+/* кейс */
+.case{background:var(--paper);color:var(--ink)}
+.case h2{color:var(--sky)}
+.case .tag{color:var(--sky)}
+.case-quote{font-family:var(--display);font-weight:700;font-size:clamp(26px,3.4vw,46px);line-height:1.08;max-width:24ch;letter-spacing:-.02em;margin-bottom:48px}
+.case-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink)}
+.case-grid div{padding:24px 22px 8px;border-right:2px solid var(--ink)}
+.case-grid div:last-child{border-right:0}
+.case-grid b{display:block;font-family:var(--display);font-size:21px;margin-bottom:10px}
+
+/* ---------- чек-калькулятор ---------- */
+.calc{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start}
+.opts{display:grid;gap:10px}
+.opt{display:grid;grid-template-columns:28px 1fr auto;gap:14px;align-items:center;padding:16px 18px;border:2px solid var(--paper);border-radius:16px;cursor:pointer;transition:background .15s,color .15s}
+.opt input{appearance:none;width:24px;height:24px;border:2px solid currentColor;border-radius:7px;display:grid;place-items:center;cursor:pointer}
+.opt input:checked{background:var(--lamp);border-color:var(--lamp)}
+.opt input:checked::after{content:"✓";color:var(--ink);font-weight:900;font-size:15px}
+.opt:has(input:checked){background:var(--paper);color:var(--ink)}
+.opt b{font-weight:700;font-size:17px}
+.opt small{display:block;opacity:.75;font-size:14px}
+.opt .pr{font-family:var(--mono);font-size:14px;white-space:nowrap}
+
+.receipt{position:sticky;top:88px;background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:14px;padding:26px 24px 30px;filter:drop-shadow(12px 12px 0 var(--sky-deep));
+  -webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/18px 100%;
+  mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/18px 100%}
+.receipt h3{font-family:var(--display);font-size:24px;text-align:center;letter-spacing:-.02em}
+.r-meta{text-align:center;font-size:12px;opacity:.65;margin:6px 0 16px;line-height:1.5}
+.r-line{border-top:1.5px dashed rgba(11,13,46,.4);margin:12px 0}
+.r-items{display:grid;gap:8px;min-height:60px}
+.r-item{display:flex;justify-content:space-between;gap:12px;animation:print .35s ease-out}
+.r-item span:first-child{min-width:0}
+@keyframes print{from{opacity:0;transform:translateY(-8px)}}
+.r-empty{opacity:.55;text-align:center;padding:14px 0}
+.r-total{display:flex;justify-content:space-between;font-weight:700;font-size:20px;font-family:var(--display);letter-spacing:-.02em}
+.r-sub{display:flex;justify-content:space-between;font-size:13px;margin-top:6px}
+.r-sub b{color:#1d8a3a}
+.r-bar{height:44px;margin:18px auto 6px;width:80%;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 7px,transparent 7px 9px,var(--ink) 9px 10px,transparent 10px 13px)}
+.r-thx{text-align:center;font-size:12px;opacity:.7}
+.r-send{display:grid;gap:8px;margin-top:18px}
+.r-send .btn{border-color:var(--ink);font-family:var(--body)}
+.r-send .btn-lamp{border-color:var(--lamp)}
+.r-send .btn-ghost{color:var(--ink)}
+.r-send .btn-ghost:hover{background:var(--ink);color:var(--paper)}
+
+/* как работаем */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.step{border:2px solid var(--paper);border-radius:22px;padding:24px;min-width:0}
+.step .k{font-family:var(--display);font-weight:900;font-size:58px;line-height:1;color:var(--lamp)}
+.step b{display:block;font-family:var(--display);font-size:20px;margin:14px 0 8px;line-height:1.1}
+.step p{font-size:15px;opacity:.9}
+
+/* вопросы */
+.faq{display:grid;gap:0;border-top:2px solid var(--paper);max-width:980px}
+.faq details{border-bottom:2px solid var(--paper)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;padding:24px 0;font-family:var(--display);font-weight:700;font-size:clamp(19px,2vw,25px);line-height:1.15}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--lamp);font-size:30px;line-height:.8;transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq p{padding:0 0 24px;max-width:66ch;opacity:.92}
+
+/* финал */
+.final{background:var(--lamp);color:var(--ink);padding:100px 0 0;overflow:hidden}
+.final h2{font-size:clamp(46px,9vw,140px);max-width:12ch}
+.final p{font-size:20px;max-width:46ch;margin:26px 0 34px}
+.final .btn{border-color:var(--ink)}
+.final .btn-ink{background:var(--ink);color:var(--paper)}
+.final .btn-ghost{color:var(--ink)}
+.final .btn-ghost:hover{background:var(--ink);color:var(--lamp)}
+.contacts{display:flex;flex-wrap:wrap;gap:12px 34px;margin-top:30px;font-family:var(--mono);font-size:15px}
+.giant{font-family:var(--display);font-weight:900;font-size:clamp(80px,21vw,330px);line-height:.8;letter-spacing:-.06em;margin-top:70px;white-space:nowrap;color:var(--sky)}
+.foot{background:var(--ink);color:var(--paper);padding:22px 0;font-size:13px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between;opacity:.75}
+
+/* ---------- телефон ---------- */
+@media (max-width:1100px){
+  .nav{display:none}
+  .hero-grid,.ai,.calc,.sec-head{grid-template-columns:1fr}
+  .phone{justify-self:start;transform:rotate(1deg)}
+  .flow{grid-template-columns:repeat(3,1fr)}
+  .flow li:nth-child(4){margin-left:0}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .case-grid{grid-template-columns:repeat(2,1fr)}
+  .case-grid div:nth-child(2){border-right:0}
+  .receipt{position:static}
+}
+@media (max-width:760px){
+  body{font-size:16px}
+  .clock{display:none}
+  .top .btn{margin-left:auto}
+  .hero{padding-top:34px}
+  .hero h1 .l3{-webkit-text-stroke:1.5px var(--paper)}
+  .lead{font-size:17px}
+  .hero-btns .btn{flex:1 1 100%}
+  .stamp{width:92px;height:92px;font-size:11px;right:-6px;top:-30px}
+  .phone{box-shadow:10px 10px 0 var(--sky-deep)}
+  .ticker{margin-top:48px}
+  .sec{padding:72px 0}
+  .sec-head{margin-bottom:36px;gap:18px}
+  .holes{grid-template-columns:1fr}
+  .hole{border-right:0;border-bottom:2px solid var(--paper);padding:26px 0}
+  .svc-row{grid-template-columns:1fr auto;gap:8px 16px;padding:22px 0}
+  .svc-row .n{grid-column:1/-1}
+  .svc-row p{grid-column:1/-1;grid-row:3}
+  .svc-row:hover{padding-inline:12px}
+  .flow{grid-template-columns:1fr 1fr}
+  .flow li:nth-child(odd){margin-left:0}
+  .flow li{margin-top:-2px}
+  .steps,.case-grid{grid-template-columns:1fr}
+  .case-grid div{border-right:0;border-bottom:2px solid var(--ink)}
+  .opt{grid-template-columns:26px 1fr;padding:14px}
+  .opt .pr{grid-column:2}
+  .final{padding-top:70px}
+  .giant{margin-top:48px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="logo" href="#top"><i>OR</i>One Reply</a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#uslugi">Услуги</a>
+      <a href="#kak">Как работает</a>
+      <a href="#keys">Кейс</a>
+      <a href="#chek">Цены</a>
+      <a href="#voprosy">Вопросы</a>
+    </nav>
+    <span class="clock" aria-label="Время в Москве">МСК <b id="clk">23:47</b> · бот на связи</span>
+    <a class="btn btn-lamp btn-sm" href="#chek">Собрать заказ</a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="kicker"><span>Сайты</span><span>Чат-боты с записью</span><span>Telegram</span><span>ИИ</span></p>
+      <h1>Ваш админ <span class="l2">спит.</span> <span class="l3">Мы нет.</span></h1>
+      <p class="lead">Клиентка пишет в 23:47 «а на завтра есть?» — и через три секунды уже записана. Делаем сайты и ботов для салонов и студий: бот отвечает ночью, сам записывает в расписание, а утром владелец получает отчёт в Telegram.</p>
+      <div class="hero-btns">
+        <a class="btn btn-lamp" href="#chek">Собрать свой заказ →</a>
+        <a class="btn btn-ghost" href="https://wa.me/79267997706?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D0%BE%D0%B5%20%D0%B4%D0%B5%D0%BC%D0%BE.">Бесплатное демо</a>
+      </div>
+    </div>
+
+    <div class="phone" aria-label="Пример переписки с ботом на сайте студии">
+      <div class="stamp">
+        <svg viewBox="0 0 118 118" aria-hidden="true"><defs><path id="c" d="M59,59 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs><text font-family="JetBrains Mono, monospace" font-size="9.5" letter-spacing="2.6" fill="#0B0D2E"><textPath href="#c">ЗАПУСК ЗА 1–2 ДНЯ · ДЕМО ДО ОПЛАТЫ · </textPath></text></svg>
+        <span>24/7<br>без<br>выходных</span>
+      </div>
+      <div class="phone-top">
+        <div class="ava">ХК</div>
+        <div><b>Студия красоты</b><small>● бот онлайн · пример</small></div>
+      </div>
+      <div class="chat" id="chat">
+        <div class="msg in">Можно на маникюр завтра после 18?<time data-t="0">23:47</time></div>
+        <div class="msg out">Да! У Анны завтра свободно:
+          <div class="slots"><span>18:00</span><span class="on">18:30</span><span>19:30</span></div>
+          <time data-t="0">23:47 · ответ за 2,8 с</time></div>
+        <div class="msg in">18:30 👍<time data-t="1">23:48</time></div>
+        <div class="msg out done">✓ Готово: завтра 18:30, маникюр с покрытием, мастер Анна. Напомним за сутки.<time data-t="1">23:48 · запись уже в расписании</time></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-in">
+      <span>Отвечаем первыми</span><span>Запись прямо в чате</span><span>1–2 дня до запуска</span><span>Демо до оплаты</span><span>Все доступы на вас</span><span>Отчёт каждое утро</span>
+      <span>Отвечаем первыми</span><span>Запись прямо в чате</span><span>1–2 дня до запуска</span><span>Демо до оплаты</span><span>Все доступы на вас</span><span>Отчёт каждое утро</span>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="dyry">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="tag">Где утекают клиенты</span><h2>Три дыры в каждом салоне</h2></div>
+      <p>Мы не продаём «сайт ради сайта». Мы затыкаем места, где вы прямо сейчас теряете записи — сайтом, ботом и ИИ.</p>
+    </div>
+    <div class="holes">
+      <div class="hole"><div class="big mono">23:00</div><h3>Заявка ночью</h3><p>Клиент пишет поздно вечером, ответ приходит утром. К этому времени он уже записался к конкурентам.</p></div>
+      <div class="hole"><div class="big mono">×10</div><h3>Запись через директ</h3><p>Десять сообщений «а на завтра есть?» вместо двух нажатий. Администратор переписывается, а не встречает гостей.</p></div>
+      <div class="hole"><div class="big mono">?%</div><h3>Цифры в голове</h3><p>Не видно, кто из мастеров пустой завтра, сколько отмен за неделю и откуда приходят клиенты.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="uslugi" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="tag">Что делаем</span><h2>Семь способов не терять клиентов</h2></div>
+      <p>Каждая услуга запускается за 1–2 дня. Берите одну или соберите связку в чеке ниже — связка выходит выгоднее.</p>
+    </div>
+    <div class="svc">
+      <div class="svc-row"><span class="n">01</span><h3>Сайт под ключ</h3><p>Продающий сайт с доменом, SSL и картой. Быстро открывается с телефона.</p><span class="p">от 20 000 ₽</span></div>
+      <div class="svc-row"><span class="n">02</span><h3>Чат-бот с записью</h3><p>Отвечает 24/7 и записывает клиента прямо в чате — сразу в YCLIENTS.</p><span class="p">от 45 000 ₽</span></div>
+      <div class="svc-row"><span class="n">03</span><h3>ИИ-консультант</h3><p>Отвечает как живой администратор: услуги, цены, условия. Заявки передаёт в вашу CRM.</p><span class="p">от 50 000 ₽</span></div>
+      <div class="svc-row"><span class="n">04</span><h3>Telegram-бот</h3><p>Запись, напоминания, рассылки, уведомления команде и мини-приложения.</p><span class="p">от 45 000 ₽</span></div>
+      <div class="svc-row"><span class="n">05</span><h3>ИИ-аналитик</h3><p>Каждое утро в Telegram: выручка, загрузка мастеров и что сделать сегодня.</p><span class="p">от 50 000 ₽</span></div>
+      <div class="svc-row"><span class="n">06</span><h3>Отзывы и карты</h3><p>Оформляем Яндекс Карты и 2ГИС, запускаем сбор настоящих отзывов.</p><span class="p">от 5 000 ₽</span></div>
+      <div class="svc-row"><span class="n">07</span><h3>Поддержка</h3><p>Правки, новые функции и контроль, что всё работает.</p><span class="p">от 5 000 ₽/мес</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="kak" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="tag">Чат-бот с записью</span><h2>Шесть шагов без администратора</h2></div>
+      <p>Бот видит только реально свободное время в расписании, поэтому накладок не бывает. Подтверждение по СМС отсекает фейковые записи.</p>
+    </div>
+    <ol class="flow">
+      <li><b>Вопрос</b><span>Клиент пишет в чат на сайте в любое время</span></li>
+      <li><b>Услуга</b><span>Бот подбирает услугу и сразу называет цену</span></li>
+      <li><b>Мастер</b><span>Клиент выбирает мастера или «любого»</span></li>
+      <li><b>Время</b><span>Только свободные окна из расписания</span></li>
+      <li><b>Код из СМС</b><span>Подтверждение номера телефона</span></li>
+      <li><b>Запись</b><span>Сразу в YCLIENTS, напоминание за сутки</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="ai" style="padding-top:0">
+  <div class="wrap ai">
+    <div>
+      <span class="tag">ИИ-аналитик</span>
+      <h2 style="font-size:clamp(38px,5.4vw,78px)">Бизнес в цифрах к утреннему кофе</h2>
+      <ul>
+        <li>Выручка, визиты и средний чек за вчера</li>
+        <li>Загрузка мастеров и свободные окна</li>
+        <li>Тревоги об отменах и неявках днём</li>
+        <li>Прогноз недели — по понедельникам</li>
+        <li>Любой отчёт — по кнопке в боте</li>
+      </ul>
+      <p class="note">Имена и телефоны клиентов в Telegram не отправляются.</p>
+    </div>
+    <div class="tg" aria-label="Пример утреннего отчёта в Telegram">
+      <div class="tg-h"><span>ИИ-аналитик · бот</span><span>09:00</span></div>
+      <b>Доброе утро! Итоги вчера</b><br>
+      Визиты: 12 · выручка 34 600 ₽ (+9%)<br>
+      Загрузка сегодня: Анна 85% · Мария 40%<br>
+      Свободно завтра у Марии: 12:00, 15:00<br><br>
+      <span class="hl">Что сделать:</span> выложить окна Марии в сторис — текст уже готов.
+      <p class="note" style="margin-top:12px">Пример сообщения · цифры условные</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec case" id="keys">
+  <div class="wrap">
+    <span class="tag">Кейс · бьюти-студия в Лобне</span>
+    <p class="case-quote">Пришли за сайтом — а теперь владелица каждое утро видит студию в цифрах, не открывая YCLIENTS.</p>
+    <div class="case-grid">
+      <div><b>Сайт</b><p>Перенесли на домен студии, поставили SSL, ускорили загрузку.</p></div>
+      <div><b>Запись в чате</b><p>Услуга, мастер, время — запись сразу в YCLIENTS.</p></div>
+      <div><b>ИИ-аналитик</b><p>Утренний отчёт, тревоги об отменах, прогноз недели.</p></div>
+      <div><b>Команда</b><p>Каждый мастер вечером получает свой график на завтра.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="chek">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="tag">Цены</span><h2>Соберите свой чек</h2></div>
+      <p>Отметьте, что нужно, — чек посчитает итог. Это стартовые цены: точную сумму назовём после 15-минутного созвона. Связка из нескольких услуг выходит выгоднее — посчитаем пакет на созвоне.</p>
+    </div>
+    <div class="calc">
+      <div class="opts" id="opts">
+        <label class="opt"><input type="checkbox" id="o-land" data-name="Лендинг" data-price="20000" checked><span><b>Лендинг</b><small>Одна продающая страница</small></span><span class="pr">от 20 000 ₽</span></label>
+        <label class="opt"><input type="checkbox" id="o-site" data-name="Многостраничный сайт" data-price="45000"><span><b>Многостраничный сайт</b><small>Услуги, мастера, цены — каждому свою страницу</small></span><span class="pr">от 45 000 ₽</span></label>
+        <label class="opt"><input type="checkbox" id="o-faq" data-name="Чат-бот по сценарию" data-price="20000"><span><b>Чат-бот на сайт</b><small>Ответы на вопросы по сценарию</small></span><span class="pr">от 20 000 ₽</span></label>
+        <label class="opt"><input type="checkbox" id="o-book" data-name="Чат-бот с записью" data-price="45000" checked><span><b>Чат-бот с записью в YCLIENTS</b><small>Запись прямо в чате, без администратора</small></span><span class="pr">от 45 000 ₽</span></label>
+        <label class="opt"><input type="checkbox" id="o-aic" data-name="ИИ-консультант" data-price="50000"><span><b>ИИ-консультант</b><small>Понимает вопросы своими словами, заявки — в CRM</small></span><span class="pr">от 50 000 ₽</span></label>
+        <label class="opt"><input type="checkbox" id="o-tg" data-name="Telegram-бот" data-price="45000"><span><b>Telegram-бот или мини-приложение</b><small>Запись, напоминания, рассылки</small></span><span class="pr">от 45 000 ₽</span></label>
+        <label class="opt"><input type="checkbox" id="o-ai" data-name="ИИ-аналитик" data-price="50000"><span><b>ИИ-аналитик для владельца</b><small>Отчёт в Telegram каждое утро</small></span><span class="pr">от 50 000 ₽</span></label>
+        <label class="opt"><input type="checkbox" id="o-map" data-name="Карты и отзывы" data-price="5000"><span><b>Карты и сбор отзывов</b><small>Яндекс Карты, 2ГИС, настоящие отзывы</small></span><span class="pr">от 5 000 ₽</span></label>
+      </div>
+
+      <aside class="receipt" aria-live="polite" aria-label="Чек заказа">
+        <h3>ONE REPLY</h3>
+        <div class="r-meta">ЧЕК № <span id="r-no">0047</span> · <span id="r-date">13.11.2026</span><br>ПРОДАЖА · СТАРТОВЫЕ ЦЕНЫ «ОТ»</div>
+        <div class="r-line"></div>
+        <div class="r-items" id="r-items"></div>
+        <div class="r-line"></div>
+        <div class="r-sub"><span>Скидка за связку</span><b id="r-disc">на созвоне</b></div>
+        <div class="r-sub"><span>Срок запуска</span><span>1–2 дня</span></div>
+        <div class="r-sub"><span>Демо до оплаты</span><span>0 ₽</span></div>
+        <div class="r-line"></div>
+        <div class="r-total"><span>ИТОГО</span><span id="r-total">0 ₽</span></div>
+        <div class="r-bar" aria-hidden="true"></div>
+        <p class="r-thx">СПАСИБО, ЧТО НЕ ТЕРЯЕТЕ КЛИЕНТОВ</p>
+        <div class="r-send">
+          <a class="btn btn-lamp" id="send-wa" href="https://wa.me/79267997706">Отправить чек в WhatsApp</a>
+          <a class="btn btn-ghost" id="send-tg" href="https://t.me/+79267997706">Написать в Telegram</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="tag">Как работаем</span><h2>От созвона до запуска — два дня</h2></div>
+      <p>Вы ничего не платите, пока не увидите результат на своих услугах и ценах.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="k">15′</div><b>Созвон</b><p>Разбираемся, где вы теряете клиентов и что важнее сделать первым.</p></div>
+      <div class="step"><div class="k">0 ₽</div><b>Бесплатное демо</b><p>Показываем бота или сайт на ваших услугах и ценах — до оплаты.</p></div>
+      <div class="step"><div class="k">48ч</div><b>Запуск</b><p>Подключаем к вашим сервисам, настраиваем и показываем, как пользоваться.</p></div>
+      <div class="step"><div class="k">∞</div><b>Поддержка</b><p>Правим, добавляем функции и следим, чтобы всё работало.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="voprosy" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="tag">Вопросы</span><h2>Спрашивают чаще всего</h2></div><p></p></div>
+    <div class="faq">
+      <details open><summary>У меня уже есть сайт. Нужно делать новый?</summary><p>Нет. Чат-бот с записью ставится на ваш сайт одной строкой кода — на Tilda, WordPress или любой другой.</p></details>
+      <details><summary>Работаете только с YCLIENTS?</summary><p>Запись прямо в чате мы делаем для YCLIENTS. С другими системами бот подберёт услугу и откроет вашу страницу записи.</p></details>
+      <details><summary>Чем ИИ-консультант отличается от обычного бота?</summary><p>Обычный бот отвечает по готовым кнопкам. ИИ-консультант понимает вопрос своими словами и отвечает по вашим ценам и правилам. Персональные данные он не собирает, а заявку передаёт в вашу CRM.</p></details>
+      <details><summary>Кому принадлежат сайт и доступы?</summary><p>Вам. Домен, хостинг и аккаунты оформляем на ваше имя и передаём все доступы.</p></details>
+      <details><summary>Что, если демо не понравится?</summary><p>Ничего не платите. Демо делаем до оплаты именно для этого.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="final" id="kontakty">
+  <div class="wrap">
+    <h2>Ответьте клиенту первым.</h2>
+    <p>Напишите, чем занимается ваш бизнес, — покажем бесплатное демо на ваших услугах за 1–2 дня.</p>
+    <div class="hero-btns">
+      <a class="btn btn-ink" href="https://wa.me/79267997706?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D0%BE%D0%B5%20%D0%B4%D0%B5%D0%BC%D0%BE.">Получить демо в WhatsApp</a>
+      <a class="btn btn-ghost" href="https://t.me/+79267997706">Написать в Telegram</a>
+    </div>
+    <div class="contacts"><a href="tel:+79267997706">8 926 799-77-06</a><span>Москва и область</span><span>Отвечаем быстро. Иногда даже ночью.</span></div>
+    <div class="giant" aria-hidden="true">One Reply</div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap"><span>© 2026 One Reply · сайты, чат-боты и ИИ для бизнеса</span><span>8 926 799-77-06</span></div>
+</footer>
+
+<script>
+(function(){
+  // Живые часы по Москве
+  var clk=document.getElementById('clk');
+  function msk(offsetMin){
+    var d=new Date(Date.now()+ (offsetMin||0)*60000);
+    return d.toLocaleTimeString('ru-RU',{timeZone:'Europe/Moscow',hour:'2-digit',minute:'2-digit'});
+  }
+  function tick(){ if(clk) clk.textContent=msk(); }
+  tick(); setInterval(tick,15000);
+
+  // Время в примере переписки — «сейчас»
+  document.querySelectorAll('#chat time[data-t]').forEach(function(t){
+    var rest=t.textContent.replace(/^\d\d:\d\d/,'');
+    t.textContent=msk(+t.dataset.t)+rest;
+  });
+
+  // Чек
+  var opts=[].slice.call(document.querySelectorAll('#opts input'));
+  var items=document.getElementById('r-items'), total=document.getElementById('r-total'), disc=document.getElementById('r-disc');
+  var wa=document.getElementById('send-wa');
+  var fmt=function(n){return n.toLocaleString('ru-RU').replace(/\u00a0/g,' ')+' ₽';};
+  var now=new Date();
+  document.getElementById('r-date').textContent=now.toLocaleDateString('ru-RU',{timeZone:'Europe/Moscow'});
+  document.getElementById('r-no').textContent=String(1000+now.getDate()*37%9000).slice(-4);
+  function render(){
+    var on=opts.filter(function(o){return o.checked;});
+    items.innerHTML='';
+    var sum=0;
+    if(!on.length){ items.innerHTML='<div class="r-empty">Отметьте услуги слева</div>'; }
+    on.forEach(function(o){
+      var p=+o.dataset.price; sum+=p;
+      var row=document.createElement('div'); row.className='r-item';
+      row.innerHTML='<span></span><span>'+fmt(p)+'</span>';
+      row.firstChild.textContent=o.dataset.name;
+      items.appendChild(row);
+    });
+    var d=0;
+    disc.textContent=on.length>=2?'посчитаем на созвоне':'—';
+    total.textContent=(on.length?'от ':'')+fmt(sum-d);
+    var text='Здравствуйте! Собрал(а) заказ на сайте One Reply:\n'+on.map(function(o){return '• '+o.dataset.name;}).join('\n')+(on.length?'\nИтого от '+fmt(sum-d):'')+'\nХочу бесплатное демо.';
+    wa.href='https://wa.me/79267997706?text='+encodeURIComponent(text);
+  }
+  opts.forEach(function(o){o.addEventListener('change',render);});
+  render();
+})();
+</script>
+</body>
+</html>
