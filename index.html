@@ -94,7 +94,7 @@ body.menu .burger i{background:var(--ink)}
 .ln{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
 .ln>span{display:inline-block;transform:translateY(110%);transition:transform 1.3s var(--ease)}
 .in .ln>span,.ln.in>span{transform:none}
-.h-xl{font-size:clamp(46px,9.2vw,168px);line-height:.92;letter-spacing:-.055em;font-weight:500}
+.h-xl{font-size:clamp(46px,7.2vw,132px);line-height:.92;letter-spacing:-.055em;font-weight:500}
 .h-xl em{font-size:1.08em;letter-spacing:-.03em;color:var(--blue)}
 .h-l{font-size:clamp(38px,6vw,104px);line-height:.95;letter-spacing:-.05em;font-weight:500}
 .h-l em{color:var(--blue)}
@@ -116,6 +116,7 @@ body:not(.loaded) .hero .ln>span{transform:translateY(110%)}
 body.loaded .hero .ln>span{transform:none;transition-delay:.55s}
 body.loaded .hero h1 .ln:nth-child(2)>span{transition-delay:.63s}
 body.loaded .hero h1 .ln:nth-child(3)>span{transition-delay:.71s}
+body.loaded .hero h1 .ln:nth-child(4)>span{transition-delay:.79s}
 .hero-foot{display:grid;grid-template-columns:minmax(0,420px) 1fr auto;gap:30px;align-items:end;margin-top:44px}
 .hero-foot p{font-size:18px;color:var(--ink);opacity:0;transform:translateY(16px);transition:all 1.2s var(--ease) 1.1s}
 .hero-foot .acts{display:flex;gap:10px;flex-wrap:wrap;opacity:0;transform:translateY(16px);transition:all 1.2s var(--ease) 1.2s}
@@ -248,12 +249,12 @@ body.loaded .hero-foot p,body.loaded .hero-foot .acts{opacity:1;transform:none}
 .dark-end{background:var(--navy);height:40px;border-radius:0 0 40px 40px}
 
 /* ---------- cta ---------- */
-.cta{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:130px var(--pad) 80px}
-.cta .h-xl{font-size:clamp(56px,12vw,220px)}
+.cta{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;text-align:left;padding:130px var(--pad) 80px}
+.cta .h-xl{font-size:clamp(52px,8.6vw,160px)}
 .cta p{max-width:520px;margin:34px auto 0;font-size:18px}
-.cta .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:24px}
-.glass{margin-top:40px;padding:30px 34px;border-radius:28px;background:rgba(240,240,238,.55);backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);border:1px solid rgba(255,255,255,.8);box-shadow:0 30px 80px rgba(6,16,58,.12);max-width:600px}
-.glass p{margin:0 auto}
+.cta .acts{display:flex;gap:10px;justify-content:flex-start;flex-wrap:wrap;margin-top:24px}
+.glass{margin-top:40px;padding:30px 34px;border-radius:28px;background:rgba(240,240,238,.55);backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);border:1px solid rgba(255,255,255,.8);box-shadow:0 30px 80px rgba(6,16,58,.12);max-width:560px}
+.glass p{margin:0}
 .cta .tel{display:block;margin-top:28px;font-size:clamp(26px,3vw,40px);letter-spacing:-.04em;font-weight:500}
 
 /* ---------- footer ---------- */
@@ -271,6 +272,7 @@ footer{background:var(--ink);color:#fff;padding:60px var(--pad) 26px;overflow:hi
   .hd nav,.hd .pill{display:none}
   .burger{display:block}
   .hero-foot{grid-template-columns:1fr}
+  .cta{justify-content:flex-end;padding-top:46vh}
   .cue{display:none}
   .row{grid-template-columns:44px 1fr auto;gap:14px 16px;padding:26px var(--pad)}
   .row p{grid-column:2/4;grid-row:2}
@@ -344,7 +346,8 @@ footer{background:var(--ink);color:#fff;padding:60px var(--pad) 26px;overflow:hi
   <div class="meta"><span>Москва и область</span><span>Сайты · Чат-боты · ИИ-аналитика</span><span id="clock">МСК —</span></div>
   <h1 class="h-xl">
     <span class="ln"><span>Сайты и боты,</span></span>
-    <span class="ln"><span>которые отвечают</span></span>
+    <span class="ln"><span>которые</span></span>
+    <span class="ln"><span>отвечают</span></span>
     <span class="ln"><span><em>первыми</em></span></span>
   </h1>
   <div class="hero-foot">
@@ -526,6 +529,47 @@ float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(
 float n2(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1.,0.)),f.x),mix(h21(i+vec2(0.,1.)),h21(i+vec2(1.,1.)),f.x),f.y);}
 float fbm(vec2 p){float s=0.,a=.5;for(int i=0;i<4;i++){s+=a*n2(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return s;}
 float fbm3(vec2 p){float s=0.,a=.5;for(int i=0;i<3;i++){s+=a*n2(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return s;}
+float sdBox(vec2 p,vec2 b){vec2 d=abs(p)-b;return length(max(d,0.))+min(max(d.x,d.y),0.);}
+float sdTrap(vec2 p,float r1,float r2,float he){vec2 k1=vec2(r2,he);vec2 k2=vec2(r2-r1,2.*he);p.x=abs(p.x);vec2 ca=vec2(p.x-min(p.x,(p.y<0.)?r1:r2),abs(p.y)-he);vec2 cb=p-k1+k2*clamp(dot(k1-p,k2)/dot(k2,k2),0.,1.);float s=(cb.x<0.&&ca.y<0.)?-1.:1.;return s*sqrt(min(dot(ca,ca),dot(cb,cb)));}
+void E(vec2 p,vec2 a,vec2 b,inout float d,inout float s){vec2 e=a-b;vec2 w=p-b;vec2 q=w-e*clamp(dot(w,e)/dot(e,e),0.,1.);d=min(d,dot(q,q));bvec3 c=bvec3(p.y>=b.y,p.y<a.y,e.x*w.y>e.y*w.x);if(all(c)||all(not(c)))s*=-1.;}
+float knight(vec2 p){
+  vec2 v0=vec2(.20,-.30),v1=vec2(.21,-.05),v2=vec2(.17,.15),v3=vec2(.10,.30),v4=vec2(.03,.40),v5=vec2(-.02,.47),v6=vec2(-.06,.38),v7=vec2(-.18,.24),v8=vec2(-.29,.08),v9=vec2(-.27,.0),v10=vec2(-.13,.03),v11=vec2(-.10,-.06),v12=vec2(-.18,-.30);
+  float d=dot(p-v0,p-v0);float s=1.;
+  E(p,v12,v0,d,s);E(p,v0,v1,d,s);E(p,v1,v2,d,s);E(p,v2,v3,d,s);E(p,v3,v4,d,s);E(p,v4,v5,d,s);E(p,v5,v6,d,s);
+  E(p,v6,v7,d,s);E(p,v7,v8,d,s);E(p,v8,v9,d,s);E(p,v9,v10,d,s);E(p,v10,v11,d,s);E(p,v11,v12,d,s);
+  float k=s*sqrt(d);
+  k=max(k,-(length(p-vec2(-.1,.25))-.025));
+  return k;
+}
+float piece(vec2 p,float t){
+  float d=min(sdBox(p-vec2(0.,-.43),vec2(.3,.05))-.015,sdBox(p-vec2(0.,-.35),vec2(.24,.035))-.01);
+  if(t<.5){
+    d=min(d,sdTrap(p-vec2(0.,-.15),.17,.08,.17));d=min(d,sdBox(p-vec2(0.,.04),vec2(.14,.02))-.01);d=min(d,length(p-vec2(0.,.19))-.13);
+  }else if(t<1.5){
+    d=min(d,sdTrap(p-vec2(0.,-.08),.2,.15,.24));
+    float tp=sdBox(p-vec2(0.,.25),vec2(.21,.09))-.01;
+    tp=max(tp,-sdBox(p-vec2(-.07,.33),vec2(.03,.05)));tp=max(tp,-sdBox(p-vec2(.07,.33),vec2(.03,.05)));
+    d=min(d,tp);
+  }else if(t<2.5){
+    d=min(d,knight(p));
+  }else if(t<3.5){
+    d=min(d,sdTrap(p-vec2(0.,-.17),.17,.07,.15));d=min(d,sdBox(p-vec2(0.,.0),vec2(.14,.02))-.01);
+    vec2 e=p-vec2(0.,.17);float hd=(length(e*vec2(1./.12,1./.17))-1.)*.12;
+    vec2 sp=p-vec2(.035,.2);sp=mat2(.77,-.64,.64,.77)*sp;hd=max(hd,-sdBox(sp,vec2(.014,.09)));
+    d=min(d,hd);d=min(d,length(p-vec2(0.,.39))-.045);
+  }else if(t<4.5){
+    d=min(d,sdTrap(p-vec2(0.,-.13),.18,.08,.19));d=min(d,sdBox(p-vec2(0.,.07),vec2(.15,.02))-.01);
+    d=min(d,sdTrap(p-vec2(0.,.19),.09,.19,.1));
+    vec2 bq=vec2(abs(p.x),p.y);
+    d=min(d,length(bq-vec2(0.,.33))-.04);d=min(d,length(bq-vec2(.085,.32))-.04);d=min(d,length(bq-vec2(.17,.31))-.04);
+    d=min(d,length(p-vec2(0.,.41))-.045);
+  }else{
+    d=min(d,sdTrap(p-vec2(0.,-.13),.18,.08,.19));d=min(d,sdBox(p-vec2(0.,.07),vec2(.15,.02))-.01);
+    d=min(d,sdTrap(p-vec2(0.,.18),.09,.17,.09));d=min(d,sdBox(p-vec2(0.,.29),vec2(.15,.025))-.01);
+    d=min(d,sdBox(p-vec2(0.,.39),vec2(.025,.08)));d=min(d,sdBox(p-vec2(0.,.4),vec2(.08,.022)));
+  }
+  return d;
+}
 /* plaster relief height */
 float H(vec2 p){
   float t=uT*.035;
@@ -535,6 +579,16 @@ float H(vec2 p){
   float r=smoothstep(-.1,.55,b)*.55;
   r+=smoothstep(.55,.95,f)*.6;
   r-=smoothstep(.35,.1,f)*.25;
+  vec2 cs=vec2(1.7,1.9);vec2 id=floor(p/cs);vec2 lp=(fract(p/cs)-.5)*cs;
+  float rn=h21(id+17.3),rn2=h21(id*1.7+3.1);
+  vec2 off=(vec2(h21(id+5.),h21(id+9.))-.5)*vec2(.5,.36);
+  float app=smoothstep(.1,.65,sin(uT*.22+rn*6.283));
+  if(app>.001){
+    vec2 pp=(lp-off)/.95;pp.y+=(1.-app)*.12;
+    float dd=piece(pp,floor(rn2*6.));
+    float pc=(smoothstep(0.,-.04,dd)*.8+clamp(-dd,0.,.12)*2.)*app;
+    r=r*(1.-.6*clamp(pc,0.,1.))+pc*1.1;
+  }
   vec2 d=p-uMs;float m=dot(d,d);
   r+=.5*exp(-m*3.)*(.5+.5*sin(sqrt(m)*14.-uT*3.));
   return r;
@@ -782,14 +836,13 @@ function frame(now){
   var showHero=hr.bottom>0,showCta=cr.top<vh;
   var blobs=showHero||showCta;
   var aspect=vw/vh,half=3.333;
-  var tx,ty,tsp;
+  var tx,ty,tsp,wide=aspect>1.05;
+  var bx=wide?.26*aspect*half:0,by=wide?.05:.82,bs=wide?Math.min(.62,.21*aspect*half/1.97):Math.min(.4,Math.max(.3,aspect*.8));
   if(!blobs){tx=C.x;ty=C.y;tsp=SP}
   else if(showCta&&!showHero){
-    tx=0;ty=0;tsp=mobile?Math.min(.72,aspect*1.1):1.05;
+    var cp=clamp(cr.top/vh,0,1);tx=bx;ty=by-cp*2.6;tsp=bs;
   }else{
-    var hp=clamp(-hr.top/vh,0,1);
-    if(aspect>1.05){tx=Math.min(1.35,aspect*half*.27);ty=.15+hp*2.6;tsp=1}
-    else{tx=0;ty=.95+hp*2.4;tsp=Math.max(.5,Math.min(.72,aspect*1.25))}
+    var hp=clamp(-hr.top/vh,0,1);tx=bx;ty=by+hp*2.6;tsp=bs;
   }
   var k=1-Math.pow(1-.06,dt/16.7);
   if(Math.abs(C.y-ty)>3){C.x=tx;C.y=ty;SP=tsp}
@@ -797,7 +850,8 @@ function frame(now){
   C.x=lerp(C.x,tx,k);C.y=lerp(C.y,ty,k);SP=lerp(SP,tsp,k);
   var T=(now-t0)/1000;
   var mxT,myT;
-  if(mouseSeen){mxT=(mx-vw/2)/vh*half;myT=-(my-vh/2)/vh*half}
+  if(mouseSeen){mxT=(mx-vw/2)/vh*half;myT=-(my-vh/2)/vh*half;
+    if(wide){mxT=Math.max(mxT,.06*aspect*half+.55*SP)}else{myT=Math.max(myT,C.y-.35);mxT=clamp(mxT,-.5*aspect*half+.3,.5*aspect*half-.3)}}
   else{mxT=C.x+Math.cos(T*.6)*1.1*SP;myT=C.y+Math.sin(T*.8)*.7*SP}
   M.x=lerp(M.x,mxT,1-Math.pow(1-.07,dt/16.7));M.y=lerp(M.y,myT,1-Math.pow(1-.07,dt/16.7));
   P=Math.max(0,P-dt/700);
