@@ -582,12 +582,17 @@ float H(vec2 p){
   vec2 cs=vec2(1.7,1.9);vec2 id=floor(p/cs);vec2 lp=(fract(p/cs)-.5)*cs;
   float rn=h21(id+17.3),rn2=h21(id*1.7+3.1);
   vec2 off=(vec2(h21(id+5.),h21(id+9.))-.5)*vec2(.5,.36);
-  float app=smoothstep(.1,.65,sin(uT*.22+rn*6.283));
+  float app=smoothstep(-.1,.55,sin(uT*.25+rn*6.283));
   if(app>.001){
-    vec2 pp=(lp-off)/.95;pp.y+=(1.-app)*.12;
+    vec2 pp=(lp-off)/1.15;
     float dd=piece(pp,floor(rn2*6.));
-    float pc=(smoothstep(0.,-.04,dd)*.8+clamp(-dd,0.,.12)*2.)*app;
-    r=r*(1.-.6*clamp(pc,0.,1.))+pc*1.1;
+    float lvl=-.62+1.3*smoothstep(0.,.8,app);
+    float msk=smoothstep(lvl+.05,lvl-.05,pp.y);
+    float pad=smoothstep(.3,.02,dd)*smoothstep(0.,.3,app);
+    r=mix(r,.12,pad*.88);
+    float pc=(smoothstep(0.,-.022,dd)*1.+clamp(-dd,0.,.15)*2.6)*msk;
+    r+=pc*1.25*smoothstep(0.,.25,app);
+    r-=.22*exp(-max(dd,0.)*40.)*step(0.,dd)*pad*msk;
   }
   vec2 d=p-uMs;float m=dot(d,d);
   r+=.5*exp(-m*3.)*(.5+.5*sin(sqrt(m)*14.-uT*3.));
