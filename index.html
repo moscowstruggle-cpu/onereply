@@ -809,7 +809,6 @@ function resizeGL(){
   cv.width=Math.max(2,Math.round(vw*s));cv.height=Math.max(2,Math.round(vh*s));
   gl.viewport(0,0,cv.width,cv.height);
 }
-W.addEventListener('pointerdown',function(){P=1});
 
 var hero=$('#top'),cta=$('#contact');
 var t0=performance.now();
@@ -864,9 +863,7 @@ function frame(now){
   C.x=lerp(C.x,tx,k);C.y=lerp(C.y,ty,k);SP=lerp(SP,tsp,k);
   var T=(now-t0)/1000;
   var mxT,myT;
-  if(mouseSeen){mxT=(mx-vw/2)/vh*half;myT=-(my-vh/2)/vh*half;
-    if(wide){mxT=Math.max(mxT,.06*aspect*half+.55*SP)}else{myT=Math.max(myT,C.y-.35);mxT=clamp(mxT,-.5*aspect*half+.3,.5*aspect*half-.3)}}
-  else{mxT=C.x+Math.cos(T*.6)*1.1*SP;myT=C.y+Math.sin(T*.8)*.7*SP}
+  mxT=C.x+Math.cos(T*.6)*1.1*SP;myT=C.y+Math.sin(T*.8)*.7*SP;
   M.x=lerp(M.x,mxT,1-Math.pow(1-.07,dt/16.7));M.y=lerp(M.y,myT,1-Math.pow(1-.07,dt/16.7));
   P=Math.max(0,P-dt/700);
   gl.uniform2f(U.uR,cv.width,cv.height);gl.uniform1f(U.uT,reduce?0:T);
