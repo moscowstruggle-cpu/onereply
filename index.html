@@ -219,6 +219,7 @@ body.loaded .hero-foot p,body.loaded .hero-foot .acts{opacity:1;transform:none}
 .opt .ck{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.3);flex:none;display:flex;align-items:center;justify-content:center;transition:all .4s var(--ease)}
 .opt .ck:after{content:"";width:10px;height:6px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) scale(0);margin-top:-3px;transition:transform .35s var(--ease)}
 .opt:hover{border-color:rgba(255,255,255,.4)}
+.opt:last-child:nth-child(odd){grid-column:1/-1}
 .opt.on{background:#1B2C78;border-color:#3A4C92}
 .opt.on .ck{background:#fff;border-color:#fff}
 .opt.on .ck:after{border-color:var(--blue);transform:rotate(-45deg) scale(1)}
@@ -383,11 +384,11 @@ footer{background:var(--ink);color:#fff;padding:60px var(--pad) 26px;overflow:hi
       <p class="rv">Каждая услуга запускается за 1–2 дня. Берите одну или соберите связку — так выгоднее.</p>
     </div>
     <div class="rows">
-      <a class="row" href="#price" data-cur="Выбрать"><span class="n">01</span><h3>Сайт под ключ</h3><p>Продающий сайт с доменом, SSL и картой. Быстро открывается с телефона.</p><span class="pr">от 20 000 ₽</span><span class="go">↗</span></a>
-      <a class="row" href="#price" data-cur="Выбрать"><span class="n">02</span><h3>Чат-бот с записью</h3><p>Отвечает 24/7 и записывает клиента прямо в чате — сразу в YCLIENTS.</p><span class="pr">от 45 000 ₽</span><span class="go">↗</span></a>
-      <a class="row" href="#price" data-cur="Выбрать"><span class="n">03</span><h3>ИИ-консультант</h3><p>Понимает вопросы своими словами и отвечает по вашим ценам и правилам.</p><span class="pr">от 50 000 ₽</span><span class="go">↗</span></a>
-      <a class="row" href="#price" data-cur="Выбрать"><span class="n">04</span><h3>Telegram-бот</h3><p>Запись, напоминания, рассылки и уведомления команде.</p><span class="pr">от 45 000 ₽</span><span class="go">↗</span></a>
-      <a class="row" href="#price" data-cur="Выбрать"><span class="n">05</span><h3>ИИ-аналитик</h3><p>Каждое утро в Telegram: выручка, загрузка мастеров и что сделать сегодня.</p><span class="pr">от 50 000 ₽</span><span class="go">↗</span></a>
+      <a class="row" href="#price" data-cur="Выбрать"><span class="n">01</span><h3>Лендинг</h3><p>Одностраничный продающий сайт с доменом, SSL и картой. Быстро открывается с телефона.</p><span class="pr">от 20 000 ₽</span><span class="go">↗</span></a>
+      <a class="row" href="#price" data-cur="Выбрать"><span class="n">02</span><h3>Многостраничный сайт</h3><p>Услуги, цены, каталог и контакты на нескольких страницах — удобно и с телефона.</p><span class="pr">от 45 000 ₽</span><span class="go">↗</span></a>
+      <a class="row" href="#price" data-cur="Выбрать"><span class="n">03</span><h3>Чат-бот с записью</h3><p>Отвечает 24/7 и записывает клиента прямо в чате — сразу в YCLIENTS.</p><span class="pr">от 45 000 ₽</span><span class="go">↗</span></a>
+      <a class="row" href="#price" data-cur="Выбрать"><span class="n">04</span><h3>ИИ-консультант</h3><p>Понимает вопросы своими словами и отвечает по вашим ценам и правилам.</p><span class="pr">от 50 000 ₽</span><span class="go">↗</span></a>
+      <a class="row" href="#price" data-cur="Выбрать"><span class="n">05</span><h3>ИИ-аналитик в Telegram</h3><p>Telegram-бот, который каждое утро присылает выручку, загрузку мастеров и что сделать сегодня.</p><span class="pr">от 50 000 ₽</span><span class="go">↗</span></a>
       <a class="row" href="#price" data-cur="Выбрать"><span class="n">06</span><h3>Карты и отзывы</h3><p>Яндекс Карты и 2ГИС, сбор настоящих отзывов — без накруток.</p><span class="pr">от 5 000 ₽</span><span class="go">↗</span></a>
     </div>
   </section>
@@ -453,8 +454,7 @@ footer{background:var(--ink);color:#fff;padding:60px var(--pad) 26px;overflow:hi
       <label class="opt"><input type="checkbox" data-p="20000" data-n="Чат-бот на сайт"><div><div class="nm">Чат-бот на сайт</div><div class="pp">от 20 000 ₽</div></div><span class="ck"></span></label>
       <label class="opt"><input type="checkbox" data-p="45000" data-n="Чат-бот с записью"><div><div class="nm">Чат-бот с записью</div><div class="pp">от 45 000 ₽</div></div><span class="ck"></span></label>
       <label class="opt"><input type="checkbox" data-p="50000" data-n="ИИ-консультант"><div><div class="nm">ИИ-консультант</div><div class="pp">от 50 000 ₽</div></div><span class="ck"></span></label>
-      <label class="opt"><input type="checkbox" data-p="45000" data-n="Telegram-бот"><div><div class="nm">Telegram-бот</div><div class="pp">от 45 000 ₽</div></div><span class="ck"></span></label>
-      <label class="opt"><input type="checkbox" data-p="50000" data-n="ИИ-аналитик"><div><div class="nm">ИИ-аналитик</div><div class="pp">от 50 000 ₽</div></div><span class="ck"></span></label>
+      <label class="opt"><input type="checkbox" data-p="50000" data-n="ИИ-аналитик в Telegram"><div><div class="nm">ИИ-аналитик в Telegram</div><div class="pp">от 50 000 ₽</div></div><span class="ck"></span></label>
       <label class="opt"><input type="checkbox" data-p="5000" data-n="Карты и отзывы"><div><div class="nm">Карты и отзывы</div><div class="pp">от 5 000 ₽</div></div><span class="ck"></span></label>
     </div>
     <div class="sum">
