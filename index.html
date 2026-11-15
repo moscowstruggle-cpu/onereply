@@ -533,13 +533,12 @@ float sdBox(vec2 p,vec2 b){vec2 d=abs(p)-b;return length(max(d,0.))+min(max(d.x,
 float sdTrap(vec2 p,float r1,float r2,float he){vec2 k1=vec2(r2,he);vec2 k2=vec2(r2-r1,2.*he);p.x=abs(p.x);vec2 ca=vec2(p.x-min(p.x,(p.y<0.)?r1:r2),abs(p.y)-he);vec2 cb=p-k1+k2*clamp(dot(k1-p,k2)/dot(k2,k2),0.,1.);float s=(cb.x<0.&&ca.y<0.)?-1.:1.;return s*sqrt(min(dot(ca,ca),dot(cb,cb)));}
 void E(vec2 p,vec2 a,vec2 b,inout float d,inout float s){vec2 e=a-b;vec2 w=p-b;vec2 q=w-e*clamp(dot(w,e)/dot(e,e),0.,1.);d=min(d,dot(q,q));bvec3 c=bvec3(p.y>=b.y,p.y<a.y,e.x*w.y>e.y*w.x);if(all(c)||all(not(c)))s*=-1.;}
 float knight(vec2 p){
-  vec2 v0=vec2(.20,-.30),v1=vec2(.21,-.05),v2=vec2(.17,.15),v3=vec2(.10,.30),v4=vec2(.03,.40),v5=vec2(-.02,.47),v6=vec2(-.06,.38),v7=vec2(-.18,.24),v8=vec2(-.29,.08),v9=vec2(-.27,.0),v10=vec2(-.13,.03),v11=vec2(-.10,-.06),v12=vec2(-.18,-.30);
-  float d=dot(p-v0,p-v0);float s=1.;
-  E(p,v12,v0,d,s);E(p,v0,v1,d,s);E(p,v1,v2,d,s);E(p,v2,v3,d,s);E(p,v3,v4,d,s);E(p,v4,v5,d,s);E(p,v5,v6,d,s);
-  E(p,v6,v7,d,s);E(p,v7,v8,d,s);E(p,v8,v9,d,s);E(p,v9,v10,d,s);E(p,v10,v11,d,s);E(p,v11,v12,d,s);
-  float k=s*sqrt(d);
-  k=max(k,-(length(p-vec2(-.1,.25))-.025));
-  return k;
+  vec2 a0=vec2(.20,-.30),a1=vec2(.22,-.12),a2=vec2(.21,.05),a3=vec2(.17,.20),a4=vec2(.11,.31),a5=vec2(.05,.38),a6=vec2(.035,.47),a7=vec2(-.02,.41),a8=vec2(-.07,.37),
+       a9=vec2(-.17,.27),a10=vec2(-.25,.16),a11=vec2(-.30,.075),a12=vec2(-.29,.02),a13=vec2(-.22,0.),a14=vec2(-.15,.03),a15=vec2(-.10,0.),a16=vec2(-.12,-.10),a17=vec2(-.18,-.30);
+  float d=dot(p-a0,p-a0);float s=1.;
+  E(p,a17,a0,d,s);E(p,a0,a1,d,s);E(p,a1,a2,d,s);E(p,a2,a3,d,s);E(p,a3,a4,d,s);E(p,a4,a5,d,s);E(p,a5,a6,d,s);E(p,a6,a7,d,s);E(p,a7,a8,d,s);
+  E(p,a8,a9,d,s);E(p,a9,a10,d,s);E(p,a10,a11,d,s);E(p,a11,a12,d,s);E(p,a12,a13,d,s);E(p,a13,a14,d,s);E(p,a14,a15,d,s);E(p,a15,a16,d,s);E(p,a16,a17,d,s);
+  return s*sqrt(d)-.008;
 }
 float cyl(float y,float y0,float y1,float w,float b){float m=min(y-y0,y1-y);if(m<0.)return 0.;float o=max(0.,b-m);return w-b+sqrt(max(0.,b*b-o*o));}
 float cone(float y,float y0,float y1,float w0,float w1){if(y<y0||y>y1)return 0.;return mix(w0,w1,(y-y0)/(y1-y0));}
@@ -550,8 +549,12 @@ vec2 piece(vec2 p,float t){
   if(t>1.5&&t<2.5){
     float W=max(cyl(y,-.48,-.38,.30,.03),cyl(y,-.38,-.31,.24,.02));
     float hb=sqrt(max(0.,W*W-p.x*p.x));
-    float d=knight(p);float k=min(-d,.14);float hk=d<0.?sqrt(max(0.,k*(.28-k))):0.;
-    hk+=.012*sin(p.y*70.-p.x*35.)*smoothstep(-.02,.12,p.x)*smoothstep(-.05,.25,p.y)*step(d,0.);
+    float d=knight(p);float k=min(-d,.16);float hk=d<0.?sqrt(max(0.,k*(.32-k))):0.;
+    float mn=smoothstep(.05,.0,abs(d+.035))*smoothstep(-.1,.05,p.x+p.y*.3)*smoothstep(.0,.25,p.y);
+    hk+=.025*mn*(.5+.5*sin(p.y*90.));
+    hk-=.03*smoothstep(.028,.0,length(p-vec2(-.1,.27)));
+    hk-=.02*smoothstep(.02,.0,length(p-vec2(-.26,.08)));
+    hk-=.015*smoothstep(.012,.0,abs(p.y-.015+.25*(p.x+.29)))*step(p.x,-.2)*step(d,0.);
     return vec2(min(d,max(ax-W,max(-.48-y,y+.3))),max(hb,hk));
   }
   float W=max(cyl(y,-.48,-.38,.30,.03),cyl(y,-.38,-.30,.24,.025));
@@ -597,11 +600,10 @@ float H(vec2 p){
     vec2 pr=piece(pp,tp);float dd=pr.x;
     float lvl=-.62+1.3*smoothstep(0.,.8,app);
     float msk=smoothstep(lvl+.05,lvl-.05,pp.y);
-    float pad=smoothstep(.12,-.15,length(pp/vec2(.46,.66))-1.)*smoothstep(0.,.3,app);
-    r=mix(r,.1,pad*.92);
-    float h3=pr.y/(1.+pr.y*1.6);
+    float pad=smoothstep(.3,-.35,length(pp/vec2(.42,.6))-1.)*smoothstep(0.,.3,app);
+    r=mix(r,r*.25+.08,pad*.85);
+    float h3=pr.y/(1.+pr.y*1.2);
     r+=h3*6.5*msk*smoothstep(0.,.25,app);
-    r-=.3*exp(-max(dd,0.)*45.)*step(0.,dd)*pad*msk;
   }
   vec2 d=p-uMs;float m=dot(d,d);
   r+=.5*exp(-m*3.)*(.5+.5*sin(sqrt(m)*14.-uT*3.));
